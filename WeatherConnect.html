@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+<body>
+	<script>
+		$(function(){
+			$.ajax({ //在裡面設定參數，所以大括號放在小括號裡面
+				url: "http://api.openweathermap.org/data/2.5/weather",
+				data:{
+					q:"taipei",
+					appid: "f681217f3006dd35e964e4bb6d021a1d",
+					lang:"zh_tw",
+					units: "metric", //這樣修改可以把在網址改的東西拿掉，寫在這裡
+				},
+				success: function(e){ //成功或沒成功，e是傳回的參數
+					console.log(e.main.temp); //透過e.的方式可以抽取東西
+					console.log(e.name);
+					console.log(e.weather[0].main);
+					console.log(e.weather[1].description);
+					let name = e.name;
+					let temp = e.main.temp;
+					let description = e.weather[0].description;
+
+					let bodyContent = `<div>城市: ${name}</div
+					<div>目前溫度: ${temp}</div>
+					<div>天氣狀況: ${description}</div>`;
+
+					$(".container").append(bodyContent);
+				}, 
+				error:function(){ //因為失敗不會回傳，所以參數不用給
+					console.log("error");
+				},
+			})
+		})
+	</script>
+	<div class="container"></div>
+</body>
+</html>

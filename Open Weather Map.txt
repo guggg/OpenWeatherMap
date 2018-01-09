@@ -1,0 +1,7 @@
+http://api.openweathermap.org/data/2.5/weather?q=taipei&appid=f681217f3006dd35e964e4bb6d021a1d&units=metric&lang=zh_TW
+
+.clearfix::after{
+	content: "";
+	clear: both;
+	display: block;
+}

@@ -1,0 +1,123 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link href="https://fonts.googleapis.com/css?family=Montserrat:200,400,800" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/earlyaccess/notosanstc.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.9/css/weather-icons.min.css" />
+	<style>
+	* {
+		margin: 0;
+		padding: 0;
+		box-sizing: border-box;
+		font-family: "Montserrat","Noto Sans TC";
+	}
+	body {
+		background-color: #ccc;
+	}
+	.weather-box {
+		margin: auto;
+		position: relative;
+		width: 510px;
+		display: flex;
+		flex-wrap: wrap;
+		top: 10px;
+	}
+	.info {
+		position: absolute;
+	}
+	.item:nth-of-type(2){
+		width: 510px;
+		height: 300px;
+		border: 0;
+		color: #fff;
+		background-color: #70C1B3;
+	}
+	.item:nth-of-type(2) .temp {
+		font-size: 60px;
+		font-weight: 800;
+	}
+	.item {
+		width: calc(510px / 3);
+		height:150px;
+		background-color: #50514F;
+		display: flex;
+		text-align: center;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+		font-size: 14px;
+		color: #70C1B3;
+		border: 1px solid #444;
+	}
+	.temp {
+		font-size: 32px;
+		/*color: #F25F5C;*/
+	}
+	.info {
+		position: absolute;
+	}
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script>
+	$(function(){
+		$.ajax({
+			url:"http://api.openweathermap.org/data/2.5/forecast/daily",
+			data:{
+				q:"Taipei",
+				appid:"b1ecbccd638b763d489602917ba47cc3",
+				units:"metric",
+				lang:"zh_TW"
+			},
+			success:function(e){
+				
+				let city = e.city.name;
+				console.log(city);
+				$(e.list).each(function(){
+					let id = this.weather[0].id;
+					// let ID = id.slice(0,1);
+					console.log(id);
+					// switch(id){
+					// 	case ;
+					// }
+					let myDate = new Date(this.dt*1000);
+					let year = myDate.getFullYear();
+					let month = myDate.getMonth()+1;
+					let date = myDate.getDate();
+					let day = myDate.getDay();
+					let dayA = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+					let temp = parseInt(this.temp.day);
+					let des = this.weather[0].description;
+					let icon = this.weather[0].icon;
+					let c = `
+					<div class="item">
+					<div class="icon">
+					<img src="http://openweathermap.org/img/w/${icon}.png"
+					</div>
+					<div class="temp">${temp}&deg;C</div>
+					<div class="des">${des}</div>
+					<div class="day">${dayA[day]}</div>
+					</div>
+					`
+					$(".weather-box").append(c);
+				})
+			},
+			error:function(){
+				console.log("error")
+			},
+		});
+	})
+</script>
+</head>
+<body>
+	<div class="weather-box">
+		<div class="info">
+			<div class="city"></div>
+			<div class="date"></div>
+			<div class="day"></div>
+		</div>
+	</div>
+</body>
+</html>
